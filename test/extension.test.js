@@ -29,8 +29,11 @@ function harness(t, options = {}) {
                 get: (key, fallback) => ({
                     enabled: options.enabled ?? false,
                     confirmBeforeOpen: options.confirmBeforeOpen ?? true,
+                    createWorkspaceIfMissing: options.createWorkspaceIfMissing ?? true,
+                    confirmBeforeCreate: options.confirmBeforeCreate ?? true,
                     pattern: '*.code-workspace',
-                    workspacesFolder: options.configuredSearch ?? search
+                    workspacesFolder: options.configuredSearch ?? search,
+                    workspaceFileCreationFolder: options.workspaceFileCreationFolder ?? ''
                 }[key] ?? fallback)
             }),
             findFiles: async () => local.map(uri)
@@ -48,6 +51,9 @@ function harness(t, options = {}) {
             showErrorMessage: async message => { calls.notifications.push(message); },
             showInformationMessage: async (...args) => {
                 calls.confirmations.push(args);
+                if (args.includes('Create Workspace')) {
+                    return options.rejectCreation ? 'Ignore' : 'Create Workspace';
+                }
                 return options.ignore ? 'Ignore' : 'Open Workspace';
             },
             showQuickPick: async (items, settings) => {
@@ -83,6 +89,13 @@ test('confirmation popup setting is enabled by default', () => {
     const setting = manifest.contributes.configuration.properties['openWorkspaceIfExists.confirmBeforeOpen'];
     assert.equal(setting.type, 'boolean');
     assert.equal(setting.default, true);
+});
+
+test('workspace creation settings default to enabled and confirmed in the current folder', () => {
+    const properties = manifest.contributes.configuration.properties;
+    assert.equal(properties['openWorkspaceIfExists.createWorkspaceIfMissing'].default, true);
+    assert.equal(properties['openWorkspaceIfExists.confirmBeforeCreate'].default, true);
+    assert.equal(properties['openWorkspaceIfExists.workspaceFileCreationFolder'].default, '');
 });
 
 test('extension activates at startup rather than after startup finishes', () => {
@@ -165,11 +178,54 @@ test('ignoring a single match opens nothing', async t => {
     assert.equal(h.calls.opened.length, 0);
 });
 
-test('no matching workspace produces no prompt', async t => {
+test('no matching workspace prompts to create and opens one for the current folder', async t => {
     const h = harness(t);
+    await h.command();
+    assert.equal(h.calls.confirmations.length, 1);
+    assert.equal(h.calls.confirmations[0][1], 'Create Workspace');
+    const file = path.join(h.root, 'project.code-workspace');
+    assert.equal(h.calls.opened[0][1].fsPath, file);
+    assert.deepEqual(JSON.parse(fs.readFileSync(file, 'utf8')), { folders: [{ path: '.' }] });
+});
+
+test('workspace is created without a question when confirmation is disabled', async t => {
+    const h = harness(t, { confirmBeforeCreate: false });
+    await h.command();
+    assert.equal(h.calls.confirmations.length, 0);
+    assert.equal(h.calls.opened[0][1].fsPath, path.join(h.root, 'project.code-workspace'));
+});
+
+test('ignoring the creation prompt leaves the folder unchanged', async t => {
+    const h = harness(t, { rejectCreation: true });
+    await h.command();
+    assert.equal(h.calls.confirmations.length, 1);
+    assert.equal(h.calls.opened.length, 0);
+    assert.equal(fs.existsSync(path.join(h.root, 'project.code-workspace')), false);
+});
+
+test('workspace can be created in a configured relative folder', async t => {
+    const h = harness(t, { workspaceFileCreationFolder: path.join('..', 'saved-workspaces') });
+    await h.command();
+    const file = path.join(path.dirname(h.root), 'saved-workspaces', 'project.code-workspace');
+    assert.equal(h.calls.opened[0][1].fsPath, file);
+    assert.equal(path.resolve(path.dirname(file), JSON.parse(fs.readFileSync(file, 'utf8')).folders[0].path), h.root);
+});
+
+test('workspace creation avoids overwriting a same-named file', async t => {
+    const h = harness(t);
+    const existing = path.join(h.root, 'project.code-workspace');
+    fs.writeFileSync(existing, '{"folders":[{"path":"elsewhere"}]}');
+    await h.command();
+    assert.equal(fs.readFileSync(existing, 'utf8'), '{"folders":[{"path":"elsewhere"}]}');
+    assert.equal(h.calls.opened[0][1].fsPath, path.join(h.root, 'project (2).code-workspace'));
+});
+
+test('workspace creation can be disabled', async t => {
+    const h = harness(t, { createWorkspaceIfMissing: false });
     h.workspace('unrelated.code-workspace', [{ path: path.join(h.root, 'other') }]);
     await h.command();
     assert.equal(h.calls.opened.length + h.calls.confirmations.length + h.calls.picks.length, 0);
+    assert.equal(fs.existsSync(path.join(h.root, 'project.code-workspace')), false);
 });
 
 test('local workspace fallback remains supported and duplicates are removed', async t => {
@@ -252,7 +308,13 @@ test('read-only smoke search in the actual configured workspace directory', asyn
         t.skip('Configured workspace directory is not available on this machine.');
         return;
     }
-    const h = harness(t, { search, root: path.resolve(__dirname, '..'), cancel: true, ignore: true });
+    const h = harness(t, {
+        search,
+        root: path.resolve(__dirname, '..'),
+        cancel: true,
+        ignore: true,
+        createWorkspaceIfMissing: false
+    });
     await h.command();
     assert.equal(h.calls.notifications.length, 0);
     assert.equal(h.calls.opened.length, 0);

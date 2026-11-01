@@ -40,6 +40,21 @@
           "default": true,
           "description": "Show a confirmation popup before opening a single matching workspace."
         },
+        "openWorkspaceIfExists.createWorkspaceIfMissing": {
+          "type": "boolean",
+          "default": true,
+          "description": "Offer to create and open a workspace file if no matching workspace is found."
+        },
+        "openWorkspaceIfExists.confirmBeforeCreate": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show a confirmation before creating a workspace file. Disable to create it automatically."
+        },
+        "openWorkspaceIfExists.workspaceFileCreationFolder": {
+          "type": "string",
+          "default": "",
+          "description": "Folder for new workspace files. Empty uses the opened folder; relative paths resolve from it. Supports ${env:NAME}."
+        },
         "openWorkspaceIfExists.pattern": {
           "type": "string",
           "default": "*.code-workspace",

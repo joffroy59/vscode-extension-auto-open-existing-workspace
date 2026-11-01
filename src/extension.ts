@@ -60,6 +60,26 @@ async function checkAndOpenWorkspace() {
         }
 
         if (candidates.size === 0) {
+            if (!config.get<boolean>('createWorkspaceIfMissing', true)) {
+                return;
+            }
+
+            if (config.get<boolean>('confirmBeforeCreate', true)) {
+                const createWorkspace = await vscode.window.showInformationMessage(
+                    `No matching workspace file found for ${path.basename(rootPath)}. Create one?`,
+                    'Create Workspace',
+                    'Ignore'
+                );
+                if (createWorkspace !== 'Create Workspace') {
+                    return;
+                }
+            }
+
+            const workspaceFile = createWorkspaceFile(
+                rootPath,
+                config.get<string>('workspaceFileCreationFolder', '')
+            );
+            await vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(workspaceFile), { forceNewWindow: false });
             return;
         }
 
@@ -93,8 +113,47 @@ async function checkAndOpenWorkspace() {
         }
     } catch (error) {
         console.error('Error searching for workspace files:', error);
-        await vscode.window.showErrorMessage(`Error searching for workspace files: ${String(error)}`);
+        await vscode.window.showErrorMessage(`Error handling workspace files: ${String(error)}`);
     }
+}
+
+function createWorkspaceFile(rootPath: string, configuredFolder: string): string {
+    const creationFolder = resolveCreationFolder(configuredFolder, rootPath);
+    fs.mkdirSync(creationFolder, { recursive: true });
+
+    const folderName = path.basename(rootPath) || 'workspace';
+    const folderPath = path.relative(creationFolder, rootPath) || '.';
+    const contents = `${JSON.stringify({ folders: [{ path: folderPath }] }, null, 2)}\n`;
+
+    for (let suffix = 1; ; suffix++) {
+        const suffixText = suffix === 1 ? '' : ` (${suffix})`;
+        const filePath = path.join(creationFolder, `${folderName}${suffixText}.code-workspace`);
+        try {
+            fs.writeFileSync(filePath, contents, { flag: 'wx' });
+            return filePath;
+        } catch (error) {
+            if (typeof error === 'object' && error !== null && 'code' in error && error.code === 'EEXIST') {
+                continue;
+            }
+            throw error;
+        }
+    }
+}
+
+function resolveCreationFolder(configuredFolder: string, rootPath: string): string {
+    const trimmed = configuredFolder.trim();
+    if (!trimmed) {
+        return rootPath;
+    }
+
+    const resolved = trimmed.replace(/\$\{env:([^}]+)\}/g, (_match: string, name: string) => {
+        const value = process.env[name];
+        if (!value) {
+            throw new Error(`Environment variable "${name}" in workspaceFileCreationFolder is not set.`);
+        }
+        return value;
+    });
+    return path.isAbsolute(resolved) ? resolved : path.resolve(rootPath, resolved);
 }
 
 function normalize(p: string): string {
