@@ -235,3 +235,22 @@ change version and build locally
 Bumped the extension version from 1.0.1 to 1.0.2 in the package manifest and lockfile, then built locally.
 
 ---
+
+## 2026-11-01T20:15:55Z
+
+### Environment
+- IDE: VS Code
+- Assistant: GitHub Copilot
+- Model: unknown
+
+### User Prompt
+add a project rule: when making a rerlease , after the release was made create a new commit to set next version for futur dev
+
+### Files Modified
+- .github/instructions/release-version.instructions.md
+- .copilot-history/prompt-history.md
+
+### Summary
+Added a project release rule requiring a separate post-release commit that bumps the extension version for future development.
+
+---
