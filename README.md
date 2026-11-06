@@ -9,13 +9,17 @@ for the full license text.
 
 ## Settings
 
-| Setting                                    | Default                                                                                                                                                                                          | Description                      |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------- |
-| `openWorkspaceIfExists.enabled`          | `true`                                                                                                                                                                                         | Check automatically on startup.  |
-| `openWorkspaceIfExists.pattern`          | `*.code-workspace`                                                                                                                                                                             | File pattern of workspace files. |
-| `openWorkspaceIfExists.workspacesFolder` | `${env:OneDrive}\workspace` | Folder searched recursively for workspace files whose `folders` include the opened folder. Supports `${env:NAME}` environment variables or an absolute path. |                                  |
+| Setting | Default | Description |
+| --- | --- | --- |
+| `openWorkspaceIfExists.enabled` | `true` | Check automatically on startup. |
+| `openWorkspaceIfExists.pattern` | `*.code-workspace` | File pattern of workspace files. |
+| `openWorkspaceIfExists.workspacesFolder` | `${env:OneDrive}\workspace` | Folder searched recursively for matching workspace files. When it exists, it is the default location in the new-workspace folder picker. Supports `${env:NAME}` environment variables or an absolute path. |
+| `openWorkspaceIfExists.createWorkspaceIfMissing` | `true` | Offer to create and open a workspace file if no matching workspace is found. |
+| `openWorkspaceIfExists.confirmBeforeCreate` | `true` | Ask before creating a workspace file. |
+| `openWorkspaceIfExists.workspaceFileCreationFolder` | `""` | Initial folder for the creation picker. When empty, the picker uses `workspacesFolder` if it exists, otherwise the opened folder. Relative paths resolve from the opened folder. Supports `${env:NAME}`. |
 
 If exactly one workspace matches, you are asked to confirm opening it. If several match, you choose one from a list.
+When no workspace matches, you can choose the folder where the new workspace file will be saved. Cancelling the folder picker leaves the current folder unchanged.
 
 ## Startup order and settings
 
@@ -43,11 +47,11 @@ This extension does not move, delete, or rewrite settings created by others.
 Pushing a version tag creates a GitHub Release with an installable `.vsix`
 attached. The workflow runs `npm ci` and `npm test`, checks that the tag matches
 the version in `package.json`, and then packages and releases the extension.
-For the current `"version": "1.0.3"` in `package.json`, run:
+For the current `"version": "1.0.5"` in `package.json`, run:
 
 ```powershell
-git tag v1.0.3
-git push origin v1.0.3
+git tag v1.0.5
+git push origin v1.0.5
 ```
 
 Use a new tag matching the updated package version for each release. The
@@ -57,11 +61,11 @@ Marketplace.
 To create a local installable package without making a release:
 
 ```powershell
-npx --yes @vscode/vsce package --no-dependencies --allow-missing-repository --allow-star-activation
+npm run package:vsix
 ```
 
 The command compiles the extension and creates
-`vscode-extension-open-workspace-1.0.3.vsix`. Development sources, tests, and
+`vscode-extension-open-workspace-1.0.5.vsix`. Development sources, tests, and
 dependencies are excluded from the package.
 
 In VS Code, open **Extensions** (`Ctrl+Shift+X`), click **...**, choose
