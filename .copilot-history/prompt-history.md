@@ -339,3 +339,25 @@ create a scrit or something can use to make the package
 Added an npm script for building the installable VSIX package and documented how to run it.
 
 ---
+
+## 2026-11-06T22:50:02Z
+
+### Environment
+- IDE: VS Code
+- Assistant: GitHub Copilot
+- Model: unknown
+
+### User Prompt
+make the release 1.0.5 and tyhat shoould trigger gh release and trigger upgrade existing vs code extension in market place
+the current verson is 1.0.5
+
+### Files Modified
+- .github/workflows/release.yml
+- package-lock.json
+- README.md
+- .copilot-history/prompt-history.md
+
+### Summary
+Configured tag releases to publish the VSIX to the VS Code Marketplace using GitHub OIDC, aligned lockfile metadata with version 1.0.5, and documented the one-time publisher trust setup.
+
+---
