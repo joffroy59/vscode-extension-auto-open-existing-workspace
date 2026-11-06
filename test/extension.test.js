@@ -15,7 +15,7 @@ function harness(t, options = {}) {
     if (!options.search) {
         fs.mkdirSync(search);
     }
-    const calls = { opened: [], confirmations: [], picks: [], errors: [], notifications: [], timers: [] };
+    const calls = { opened: [], confirmations: [], picks: [], folderDialogs: [], errors: [], notifications: [], timers: [] };
     const local = [];
     let command;
     const uri = file => ({ fsPath: file });
@@ -49,6 +49,10 @@ function harness(t, options = {}) {
         },
         window: {
             showErrorMessage: async message => { calls.notifications.push(message); },
+            showOpenDialog: async dialogOptions => {
+                calls.folderDialogs.push(dialogOptions);
+                return options.cancelFolderSelection ? undefined : [uri(options.selectedCreationFolder ?? dialogOptions.defaultUri.fsPath)];
+            },
             showInformationMessage: async (...args) => {
                 calls.confirmations.push(args);
                 if (args.includes('Create Workspace')) {
@@ -77,7 +81,7 @@ function harness(t, options = {}) {
         fs.writeFileSync(file, text ?? JSON.stringify({ folders }));
         return file;
     }
-    return { root, search, calls, local, activation, command: () => command(), workspace };
+    return { root, search, calls, local, options, activation, command: () => command(), workspace };
 }
 
 test('default search folder uses OneDrive environment variable', () => {
@@ -178,21 +182,41 @@ test('ignoring a single match opens nothing', async t => {
     assert.equal(h.calls.opened.length, 0);
 });
 
-test('no matching workspace prompts to create and opens one for the current folder', async t => {
+test('no matching workspace prompts to create and opens a folder picker at the configured workspace folder', async t => {
     const h = harness(t);
     await h.command();
     assert.equal(h.calls.confirmations.length, 1);
     assert.equal(h.calls.confirmations[0][1], 'Create Workspace');
-    const file = path.join(h.root, 'project.code-workspace');
+    assert.equal(h.calls.folderDialogs.length, 1);
+    assert.equal(h.calls.folderDialogs[0].defaultUri.fsPath, h.search);
+    assert.equal(h.calls.folderDialogs[0].canSelectFolders, true);
+    assert.equal(h.calls.folderDialogs[0].canSelectFiles, false);
+    const file = path.join(h.search, 'project.code-workspace');
     assert.equal(h.calls.opened[0][1].fsPath, file);
-    assert.deepEqual(JSON.parse(fs.readFileSync(file, 'utf8')), { folders: [{ path: '.' }] });
+    assert.equal(path.resolve(path.dirname(file), JSON.parse(fs.readFileSync(file, 'utf8')).folders[0].path), h.root);
 });
 
 test('workspace is created without a question when confirmation is disabled', async t => {
     const h = harness(t, { confirmBeforeCreate: false });
     await h.command();
     assert.equal(h.calls.confirmations.length, 0);
-    assert.equal(h.calls.opened[0][1].fsPath, path.join(h.root, 'project.code-workspace'));
+    assert.equal(h.calls.opened[0][1].fsPath, path.join(h.search, 'project.code-workspace'));
+});
+
+test('workspace is saved in the folder selected in the picker', async t => {
+    const h = harness(t);
+    const selectedFolder = path.join(h.search, 'picked');
+    h.options.selectedCreationFolder = selectedFolder;
+    await h.command();
+    assert.equal(h.calls.opened[0][1].fsPath, path.join(selectedFolder, 'project.code-workspace'));
+});
+
+test('cancelling the folder picker does not create or open a workspace', async t => {
+    const h = harness(t, { cancelFolderSelection: true });
+    await h.command();
+    assert.equal(h.calls.folderDialogs.length, 1);
+    assert.equal(h.calls.opened.length, 0);
+    assert.equal(fs.existsSync(path.join(h.search, 'project.code-workspace')), false);
 });
 
 test('ignoring the creation prompt leaves the folder unchanged', async t => {
@@ -207,17 +231,18 @@ test('workspace can be created in a configured relative folder', async t => {
     const h = harness(t, { workspaceFileCreationFolder: path.join('..', 'saved-workspaces') });
     await h.command();
     const file = path.join(path.dirname(h.root), 'saved-workspaces', 'project.code-workspace');
+    assert.equal(h.calls.folderDialogs[0].defaultUri.fsPath, path.resolve(path.dirname(h.root), 'saved-workspaces'));
     assert.equal(h.calls.opened[0][1].fsPath, file);
     assert.equal(path.resolve(path.dirname(file), JSON.parse(fs.readFileSync(file, 'utf8')).folders[0].path), h.root);
 });
 
 test('workspace creation avoids overwriting a same-named file', async t => {
     const h = harness(t);
-    const existing = path.join(h.root, 'project.code-workspace');
+    const existing = path.join(h.search, 'project.code-workspace');
     fs.writeFileSync(existing, '{"folders":[{"path":"elsewhere"}]}');
     await h.command();
     assert.equal(fs.readFileSync(existing, 'utf8'), '{"folders":[{"path":"elsewhere"}]}');
-    assert.equal(h.calls.opened[0][1].fsPath, path.join(h.root, 'project (2).code-workspace'));
+    assert.equal(h.calls.opened[0][1].fsPath, path.join(h.search, 'project (2).code-workspace'));
 });
 
 test('workspace creation can be disabled', async t => {

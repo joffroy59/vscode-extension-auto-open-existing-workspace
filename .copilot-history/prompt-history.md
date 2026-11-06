@@ -297,3 +297,25 @@ allow settings to by pass question of creation if missing
 Added configurable creation of a workspace file when no matching workspace exists, with confirmation and destination-folder settings.
 
 ---
+
+## 2026-11-06T22:29:25Z
+
+### Environment
+- IDE: VS Code
+- Assistant: GitHub Copilot
+- Model: unknown
+
+### User Prompt
+when creating workspace ask user with a window for choosing folder to save wworkspace file , by default open folder configured in settings for vs code workspace folder
+
+### Files Modified
+- src/extension.ts
+- package.json
+- README.md
+- test/extension.test.js
+- .copilot-history/prompt-history.md
+
+### Summary
+Added a folder picker for new workspace files, initialized from configured workspace folders, with cancellation support and regression coverage.
+
+---

@@ -9,13 +9,17 @@ for the full license text.
 
 ## Settings
 
-| Setting                                    | Default                                                                                                                                                                                          | Description                      |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------- |
-| `openWorkspaceIfExists.enabled`          | `true`                                                                                                                                                                                         | Check automatically on startup.  |
-| `openWorkspaceIfExists.pattern`          | `*.code-workspace`                                                                                                                                                                             | File pattern of workspace files. |
-| `openWorkspaceIfExists.workspacesFolder` | `${env:OneDrive}\workspace` | Folder searched recursively for workspace files whose `folders` include the opened folder. Supports `${env:NAME}` environment variables or an absolute path. |                                  |
+| Setting | Default | Description |
+| --- | --- | --- |
+| `openWorkspaceIfExists.enabled` | `true` | Check automatically on startup. |
+| `openWorkspaceIfExists.pattern` | `*.code-workspace` | File pattern of workspace files. |
+| `openWorkspaceIfExists.workspacesFolder` | `${env:OneDrive}\workspace` | Folder searched recursively for matching workspace files. When it exists, it is the default location in the new-workspace folder picker. Supports `${env:NAME}` environment variables or an absolute path. |
+| `openWorkspaceIfExists.createWorkspaceIfMissing` | `true` | Offer to create and open a workspace file if no matching workspace is found. |
+| `openWorkspaceIfExists.confirmBeforeCreate` | `true` | Ask before creating a workspace file. |
+| `openWorkspaceIfExists.workspaceFileCreationFolder` | `""` | Initial folder for the creation picker. When empty, the picker uses `workspacesFolder` if it exists, otherwise the opened folder. Relative paths resolve from the opened folder. Supports `${env:NAME}`. |
 
 If exactly one workspace matches, you are asked to confirm opening it. If several match, you choose one from a list.
+When no workspace matches, you can choose the folder where the new workspace file will be saved. Cancelling the folder picker leaves the current folder unchanged.
 
 ## Startup order and settings
 

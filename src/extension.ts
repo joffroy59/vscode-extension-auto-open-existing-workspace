@@ -75,10 +75,21 @@ async function checkAndOpenWorkspace() {
                 }
             }
 
-            const workspaceFile = createWorkspaceFile(
-                rootPath,
-                config.get<string>('workspaceFileCreationFolder', '')
-            );
+            const configuredCreationFolder = config.get<string>('workspaceFileCreationFolder', '');
+            const defaultFolder = resolveDefaultCreationFolder(configuredCreationFolder, workspacesFolder, rootPath);
+            const selectedFolders = await vscode.window.showOpenDialog({
+                canSelectFiles: false,
+                canSelectFolders: true,
+                canSelectMany: false,
+                defaultUri: vscode.Uri.file(defaultFolder),
+                openLabel: 'Select Workspace Folder'
+            });
+            const selectedFolder = selectedFolders?.[0];
+            if (!selectedFolder) {
+                return;
+            }
+
+            const workspaceFile = createWorkspaceFile(rootPath, selectedFolder.fsPath);
             await vscode.commands.executeCommand('vscode.openFolder', vscode.Uri.file(workspaceFile), { forceNewWindow: false });
             return;
         }
@@ -154,6 +165,24 @@ function resolveCreationFolder(configuredFolder: string, rootPath: string): stri
         return value;
     });
     return path.isAbsolute(resolved) ? resolved : path.resolve(rootPath, resolved);
+}
+
+function resolveDefaultCreationFolder(configuredCreationFolder: string, workspacesFolder: string, rootPath: string): string {
+    if (configuredCreationFolder.trim()) {
+        return resolveCreationFolder(configuredCreationFolder, rootPath);
+    }
+
+    if (workspacesFolder && fs.existsSync(workspacesFolder)) {
+        try {
+            if (fs.statSync(workspacesFolder).isDirectory()) {
+                return workspacesFolder;
+            }
+        } catch (error) {
+            console.error(`Unable to inspect workspace directory "${workspacesFolder}":`, error);
+        }
+    }
+
+    return rootPath;
 }
 
 function normalize(p: string): string {
