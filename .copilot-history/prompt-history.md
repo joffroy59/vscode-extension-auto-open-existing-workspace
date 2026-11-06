@@ -319,3 +319,23 @@ when creating workspace ask user with a window for choosing folder to save wwork
 Added a folder picker for new workspace files, initialized from configured workspace folders, with cancellation support and regression coverage.
 
 ---
+
+## 2026-11-06T22:34:05Z
+
+### Environment
+- IDE: VS Code
+- Assistant: GitHub Copilot
+- Model: unknown
+
+### User Prompt
+create a scrit or something can use to make the package
+
+### Files Modified
+- package.json
+- README.md
+- .copilot-history/prompt-history.md
+
+### Summary
+Added an npm script for building the installable VSIX package and documented how to run it.
+
+---
