@@ -62,6 +62,9 @@ git push origin v1.0.5
 ```
 
 Use a new tag matching the updated package version for each release.
+If the Marketplace publish job fails after the GitHub Release succeeds, rerun
+`Publish VSIX` from GitHub Actions and enter the successful `Release VSIX` run ID
+to reuse its uploaded VSIX artifact without creating another release.
 
 To create a local installable package without making a release:
 

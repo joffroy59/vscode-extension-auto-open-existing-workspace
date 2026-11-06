@@ -403,3 +403,23 @@ split action into release on tag and create github release, and another to publi
 Split tag-based GitHub Release creation and Marketplace publishing into separate workflows, passing the exact VSIX artifact from the release workflow to the OIDC publishing workflow.
 
 ---
+
+## 2026-11-06T23:08:14Z
+
+### Environment
+- IDE: VS Code
+- Assistant: GitHub Copilot
+- Model: unknown
+
+### User Prompt
+i change the config in trusted pusblisher , you can now push the tag and publish the release to microsoft marktplace
+
+### Files Modified
+- .github/workflows/publish.yml
+- README.md
+- .copilot-history/prompt-history.md
+
+### Summary
+Pinned the Marketplace publishing CLI to vsce 4.1.0 and added a manual retry path that can reuse the VSIX artifact from an existing GitHub Release run.
+
+---

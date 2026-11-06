@@ -6,6 +6,12 @@ on:
       - Release VSIX
     types:
       - completed
+  workflow_dispatch:
+    inputs:
+      release_run_id:
+        description: Actions run ID for the successful Release VSIX run
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -14,7 +20,7 @@ permissions:
 
 jobs:
   publish:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: Set up Node.js
@@ -28,10 +34,10 @@ jobs:
           name: extension-vsix
           path: dist
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          run-id: ${{ github.event.workflow_run.id }}
+          run-id: ${{ github.event.inputs.release_run_id || github.event.workflow_run.id }}
 
       - name: Publish to VS Code Marketplace
         run: |
           vsix_file="$(find dist -maxdepth 1 -name '*.vsix' -print -quit)"
           test -n "$vsix_file"
-          npx --yes @vscode/vsce publish --packagePath "$vsix_file" --oidc
+          npx --yes @vscode/vsce@4.1.0 publish --oidc --packagePath "$vsix_file"
