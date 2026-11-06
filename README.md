@@ -53,7 +53,7 @@ OIDC Trusted Publishing.
 Before the first release, configure a Trusted Publishing policy for the `joffroy`
 publisher in Marketplace publisher management. Set the repository owner to
 `joffroy59`, repository to `vscode-extension-open-workspace-main`, and workflow
-to `release.yml`; leave the environment empty unless one is configured in GitHub.
+to `publish.yml`; leave the environment empty unless one is configured in GitHub.
 For the current `"version": "1.0.5"` in `package.json`, run:
 
 ```powershell
@@ -61,9 +61,7 @@ git tag v1.0.5
 git push origin v1.0.5
 ```
 
-Use a new tag matching the updated package version for each release. The
-workflow creates GitHub Releases only; it does not publish to the VS Code
-Marketplace.
+Use a new tag matching the updated package version for each release.
 
 To create a local installable package without making a release:
 

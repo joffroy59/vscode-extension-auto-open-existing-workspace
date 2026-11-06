@@ -361,3 +361,24 @@ the current verson is 1.0.5
 Configured tag releases to publish the VSIX to the VS Code Marketplace using GitHub OIDC, aligned lockfile metadata with version 1.0.5, and documented the one-time publisher trust setup.
 
 ---
+
+## 2026-11-06T22:59:05Z
+
+### Environment
+- IDE: VS Code
+- Assistant: GitHub Copilot
+- Model: unknown
+
+### User Prompt
+create publish.yml
+
+### Files Modified
+- .github/workflows/publish.yml
+- .github/workflows/release.yml
+- README.md
+- .copilot-history/prompt-history.md
+
+### Summary
+Renamed the tag-triggered Marketplace and GitHub release workflow to publish.yml to match the Trusted Publishing policy, and updated the release documentation.
+
+---

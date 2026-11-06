@@ -1,4 +1,4 @@
-name: Release VSIX
+name: Publish VSIX
 
 on:
   push:
