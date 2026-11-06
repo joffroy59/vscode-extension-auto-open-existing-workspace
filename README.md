@@ -54,11 +54,11 @@ Before the first release, configure a Trusted Publishing policy for the `joffroy
 publisher in Marketplace publisher management. Set the repository owner to
 `joffroy59`, repository to `vscode-extension-open-workspace-main`, and workflow
 to `publish.yml`; leave the environment empty unless one is configured in GitHub.
-For the current `"version": "1.0.5"` in `package.json`, run:
+For the current `"version": "1.0.6"` in `package.json`, run:
 
 ```powershell
-git tag v1.0.5
-git push origin v1.0.5
+git tag v1.0.6
+git push origin v1.0.6
 ```
 
 Use a new tag matching the updated package version for each release.
@@ -73,7 +73,7 @@ npm run package:vsix
 ```
 
 The command compiles the extension and creates
-`vscode-extension-open-workspace-1.0.5.vsix`. Development sources, tests, and
+`vscode-extension-open-workspace-1.0.6.vsix`. Development sources, tests, and
 dependencies are excluded from the package.
 
 In VS Code, open **Extensions** (`Ctrl+Shift+X`), click **...**, choose
