@@ -44,11 +44,11 @@ This extension does not move, delete, or rewrite settings created by others.
 
 ### Automated GitHub Releases
 
-Pushing a version tag creates a GitHub Release with an installable `.vsix`
-attached and publishes that package to the VS Code Marketplace. The workflow
-runs `npm ci` and `npm test`, checks that the tag matches the version in
-`package.json`, then packages and publishes the extension using GitHub Actions
-OIDC Trusted Publishing.
+Pushing a version tag starts the `Release VSIX` workflow. It runs `npm ci` and
+`npm test`, checks that the tag matches the version in `package.json`, packages
+the extension, and creates a GitHub Release with the `.vsix` attached. After
+that workflow succeeds, `Publish VSIX` downloads the same package and publishes
+it to the VS Code Marketplace using GitHub Actions OIDC Trusted Publishing.
 
 Before the first release, configure a Trusted Publishing policy for the `joffroy`
 publisher in Marketplace publisher management. Set the repository owner to

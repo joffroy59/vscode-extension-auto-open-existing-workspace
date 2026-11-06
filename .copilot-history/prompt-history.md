@@ -382,3 +382,24 @@ create publish.yml
 Renamed the tag-triggered Marketplace and GitHub release workflow to publish.yml to match the Trusted Publishing policy, and updated the release documentation.
 
 ---
+
+## 2026-11-06T23:01:05Z
+
+### Environment
+- IDE: VS Code
+- Assistant: GitHub Copilot
+- Model: unknown
+
+### User Prompt
+split action into release on tag and create github release, and another to publish to microsoft when i new release is created
+
+### Files Modified
+- .github/workflows/release.yml
+- .github/workflows/publish.yml
+- README.md
+- .copilot-history/prompt-history.md
+
+### Summary
+Split tag-based GitHub Release creation and Marketplace publishing into separate workflows, passing the exact VSIX artifact from the release workflow to the OIDC publishing workflow.
+
+---
