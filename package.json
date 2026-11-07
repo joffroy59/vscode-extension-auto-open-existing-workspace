@@ -3,7 +3,7 @@
   "publisher": "joffroy",
   "repository": {
     "type": "git",
-    "url": "https://github.com/joffroy59/vscode-extension-open-workspace-main.git"
+    "url": "https://github.com/joffroy59/vscode-extension-auto-open-existing-workspace.git"
   },
   "license": "Apache-2.0",
   "displayName": "Open Workspace If Exists",

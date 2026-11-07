@@ -57,7 +57,7 @@ Before the first release, open [Marketplace publisher management](https://market
 - **Policy name:** `Release Workflow` (or another recognizable name)
 - **Provider:** `GitHub Actions`
 - **Repository owner:** `joffroy59`
-- **Repository:** `vscode-extension-open-workspace-main` (omit `.git`)
+- **Repository:** `vscode-extension-auto-open-existing-workspace` (omit `.git`)
 - **Workflow:** `publish.yml` (the file under `.github/workflows`)
 - **Environment:** leave blank unless the workflow uses a GitHub environment
 
