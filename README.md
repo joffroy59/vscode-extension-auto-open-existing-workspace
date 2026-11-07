@@ -1,4 +1,4 @@
-# VSCode Extension: Open Workspace If Exists
+# VSCode Extension: Open Existing Workspace
 
 Opens an existing `.code-workspace` file that contains the folder currently opened in VS Code.
 
@@ -83,7 +83,7 @@ npm run package:vsix
 ```
 
 The command compiles the extension and creates
-`vscode-extension-open-workspace-1.0.6.vsix`. Development sources, tests, and
+`vscode-extension-auto-open-existing-workspace-1.0.6.vsix`. Development sources, tests, and
 dependencies are excluded from the package.
 
 In VS Code, open **Extensions** (`Ctrl+Shift+X`), click **...**, choose
@@ -114,7 +114,7 @@ window. After changing the code, restart the debug session to compile and load
 the changes. Stop debugging with `Shift+F5`.
 
 In the development host, open a folder listed in one of your workspace files.
-Run **Open Workspace If Exists** from the Command Palette. Confirm the single
+Run **Open Existing Workspace** from the Command Palette. Confirm the single
 match prompt, or choose a workspace when multiple files match; cancelling should
 leave the current folder open. Opening a `.code-workspace` directly should not
 prompt again.

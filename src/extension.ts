@@ -3,9 +3,9 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 export async function activate(context: vscode.ExtensionContext) {
-    console.log('Extension "vscode-extension-open-workspace" is now active!');
+    console.log('Extension "vscode-extension-auto-open-existing-workspace" is now active!');
 
-    const disposable = vscode.commands.registerCommand('vscode-extension-open-workspace.openExistingWorkspace', async () => {
+    const disposable = vscode.commands.registerCommand('vscode-extension-auto-open-existing-workspace.openExistingWorkspace', async () => {
         await checkAndOpenWorkspace();
     });
 

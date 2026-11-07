@@ -6,8 +6,8 @@ const vscode = require("vscode");
 const fs = require("fs");
 const path = require("path");
 async function activate(context) {
-    console.log('Extension "vscode-extension-open-workspace" is now active!');
-    const disposable = vscode.commands.registerCommand('vscode-extension-open-workspace.openExistingWorkspace', async () => {
+    console.log('Extension "vscode-extension-auto-open-existing-workspace" is now active!');
+    const disposable = vscode.commands.registerCommand('vscode-extension-auto-open-existing-workspace.openExistingWorkspace', async () => {
         await checkAndOpenWorkspace();
     });
     context.subscriptions.push(disposable);
