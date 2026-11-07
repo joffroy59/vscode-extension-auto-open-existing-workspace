@@ -340,6 +340,28 @@ Added an npm script for building the installable VSIX package and documented how
 
 ---
 
+## 2026-11-07T07:21:01Z
+
+### Environment
+- IDE: VS Code
+- Assistant: GitHub Copilot
+- Model: unknown
+
+### User Prompt
+bump version to 2.0.0
+
+### Files Modified
+- package.json
+- package-lock.json
+- .copilot-history/prompt-history.md
+
+### Summary
+Bumped the package version from 1.1.2 to 2.0.0 in the manifest and lockfile.
+
+---
+
+---
+
 ## 2026-11-06T22:50:02Z
 
 ### Environment
