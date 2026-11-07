@@ -444,3 +444,45 @@ i change the config in trusted pusblisher , you can now push the tag and publish
 Bumped the package version to 1.0.6 after successfully creating the v1.0.5 GitHub Release and publishing the extension to the VS Code Marketplace.
 
 ---
+
+## 2026-11-06T23:16:05Z
+
+### Environment
+- IDE: VS Code
+- Assistant: GitHub Copilot
+- Model: unknown
+
+### User Prompt
+create a skill for the creation of the 2 workflow , release and publish , with a note on readme or a specific md to explain how to set Trusted Publisher in microsoft marketplacfe
+
+### Files Modified
+- .github/skills/vscode-marketplace-release/SKILL.md
+- .github/workflows/publish.yml
+- README.md
+- .copilot-history/prompt-history.md
+
+### Summary
+Added a reusable skill for separate GitHub Release and VS Code Marketplace publishing workflows, documented Marketplace Trusted Publishing setup, and aligned the publisher job with Node 22.
+
+---
+
+## 2026-11-06T23:19:11Z
+
+### Environment
+- IDE: VS Code
+- Assistant: GitHub Copilot
+- Model: unknown
+
+### User Prompt
+add the skill to global user urle and in my centralized skill repo
+
+### Files Modified
+- C:/Users/jerom/.agents/skills/vscode-marketplace-release/SKILL.md
+- C:/Users/jerom/.claude/skills/vscode-marketplace-release/SKILL.md
+- D:/dev-data/githome/github/joffroy59/ai-tools-central/skills/vscode-marketplace-release/SKILL.md
+- .copilot-history/prompt-history.md
+
+### Summary
+Copied the Marketplace release skill to the global agent and Claude skill folders and the centralized AI tools skills repository.
+
+---

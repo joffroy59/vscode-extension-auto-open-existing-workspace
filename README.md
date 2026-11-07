@@ -50,10 +50,18 @@ the extension, and creates a GitHub Release with the `.vsix` attached. After
 that workflow succeeds, `Publish VSIX` downloads the same package and publishes
 it to the VS Code Marketplace using GitHub Actions OIDC Trusted Publishing.
 
-Before the first release, configure a Trusted Publishing policy for the `joffroy`
-publisher in Marketplace publisher management. Set the repository owner to
-`joffroy59`, repository to `vscode-extension-open-workspace-main`, and workflow
-to `publish.yml`; leave the environment empty unless one is configured in GitHub.
+### Marketplace Trusted Publishing
+
+Before the first release, open [Marketplace publisher management](https://marketplace.visualstudio.com/manage/publishers/), select the `joffroy` publisher, open **Trusted Publishing**, and create a policy with:
+
+- **Policy name:** `Release Workflow` (or another recognizable name)
+- **Provider:** `GitHub Actions`
+- **Repository owner:** `joffroy59`
+- **Repository:** `vscode-extension-open-workspace-main` (omit `.git`)
+- **Workflow:** `publish.yml` (the file under `.github/workflows`)
+- **Environment:** leave blank unless the workflow uses a GitHub environment
+
+If the policy shows an activation deadline, run the workflow before it expires.
 For the current `"version": "1.0.6"` in `package.json`, run:
 
 ```powershell
@@ -65,6 +73,8 @@ Use a new tag matching the updated package version for each release.
 If the Marketplace publish job fails after the GitHub Release succeeds, rerun
 `Publish VSIX` from GitHub Actions and enter the successful `Release VSIX` run ID
 to reuse its uploaded VSIX artifact without creating another release.
+See the [VS Code Marketplace release skill](.github/skills/vscode-marketplace-release/SKILL.md)
+for the workflow creation and recovery procedure.
 
 To create a local installable package without making a release:
 
