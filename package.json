@@ -30,37 +30,37 @@
     "configuration": {
       "title": "Open Existing Workspace",
       "properties": {
-        "openWorkspaceIfExists.enabled": {
+        "autoOpenExistingWorkspace.enabled": {
           "type": "boolean",
           "default": true,
           "description": "Enable automatic workspace detection and opening on startup."
         },
-        "openWorkspaceIfExists.confirmBeforeOpen": {
+        "autoOpenExistingWorkspace.confirmBeforeOpen": {
           "type": "boolean",
           "default": true,
           "description": "Show a confirmation popup before opening a single matching workspace."
         },
-        "openWorkspaceIfExists.createWorkspaceIfMissing": {
+        "autoOpenExistingWorkspace.createWorkspaceIfMissing": {
           "type": "boolean",
           "default": true,
           "description": "Offer to create and open a workspace file if no matching workspace is found."
         },
-        "openWorkspaceIfExists.confirmBeforeCreate": {
+        "autoOpenExistingWorkspace.confirmBeforeCreate": {
           "type": "boolean",
           "default": true,
           "description": "Show a confirmation before creating a workspace file. Disable to create it automatically."
         },
-        "openWorkspaceIfExists.workspaceFileCreationFolder": {
+        "autoOpenExistingWorkspace.workspaceFileCreationFolder": {
           "type": "string",
           "default": "",
           "description": "Initial folder for the new workspace file picker. Empty uses workspacesFolder if it exists, otherwise the opened folder. Relative paths resolve from it. Supports ${env:NAME}."
         },
-        "openWorkspaceIfExists.pattern": {
+        "autoOpenExistingWorkspace.pattern": {
           "type": "string",
           "default": "*.code-workspace",
           "description": "File glob pattern to search for workspaces."
         },
-        "openWorkspaceIfExists.workspacesFolder": {
+        "autoOpenExistingWorkspace.workspacesFolder": {
           "type": "string",
           "default": "${env:OneDrive}\\workspace",
           "description": "Folder searched (recursively) for .code-workspace files that contain the currently opened folder. If several match, you are asked to choose one."

@@ -85,21 +85,21 @@ function harness(t, options = {}) {
 }
 
 test('default search folder uses OneDrive environment variable', () => {
-    assert.equal(manifest.contributes.configuration.properties['openWorkspaceIfExists.workspacesFolder'].default,
+    assert.equal(manifest.contributes.configuration.properties['autoOpenExistingWorkspace.workspacesFolder'].default,
         '${env:OneDrive}\\workspace');
 });
 
 test('confirmation popup setting is enabled by default', () => {
-    const setting = manifest.contributes.configuration.properties['openWorkspaceIfExists.confirmBeforeOpen'];
+    const setting = manifest.contributes.configuration.properties['autoOpenExistingWorkspace.confirmBeforeOpen'];
     assert.equal(setting.type, 'boolean');
     assert.equal(setting.default, true);
 });
 
 test('workspace creation settings default to enabled and confirmed in the current folder', () => {
     const properties = manifest.contributes.configuration.properties;
-    assert.equal(properties['openWorkspaceIfExists.createWorkspaceIfMissing'].default, true);
-    assert.equal(properties['openWorkspaceIfExists.confirmBeforeCreate'].default, true);
-    assert.equal(properties['openWorkspaceIfExists.workspaceFileCreationFolder'].default, '');
+    assert.equal(properties['autoOpenExistingWorkspace.createWorkspaceIfMissing'].default, true);
+    assert.equal(properties['autoOpenExistingWorkspace.confirmBeforeCreate'].default, true);
+    assert.equal(properties['autoOpenExistingWorkspace.workspaceFileCreationFolder'].default, '');
 });
 
 test('extension activates at startup rather than after startup finishes', () => {
@@ -327,7 +327,7 @@ test('malformed candidates do not prevent finding another valid workspace', asyn
 });
 
 test('read-only smoke search in the actual configured workspace directory', async t => {
-    const search = manifest.contributes.configuration.properties['openWorkspaceIfExists.workspacesFolder'].default
+    const search = manifest.contributes.configuration.properties['autoOpenExistingWorkspace.workspacesFolder'].default
         .replace(/\$\{env:([^}]+)\}/g, (_match, name) => process.env[name] ?? '');
     if (!fs.existsSync(search)) {
         t.skip('Configured workspace directory is not available on this machine.');

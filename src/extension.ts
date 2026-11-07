@@ -12,7 +12,7 @@ export async function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(disposable);
 
     // Check automatically on startup if enabled
-    const config = vscode.workspace.getConfiguration('openWorkspaceIfExists');
+    const config = vscode.workspace.getConfiguration('autoOpenExistingWorkspace');
     if (config.get<boolean>('enabled', true)) {
         await checkAndOpenWorkspace();
     }
@@ -30,7 +30,7 @@ async function checkAndOpenWorkspace() {
     }
 
     const rootPath = workspaceFolders[0].uri.fsPath;
-    const config = vscode.workspace.getConfiguration('openWorkspaceIfExists');
+    const config = vscode.workspace.getConfiguration('autoOpenExistingWorkspace');
     const pattern = config.get<string>('pattern', '*.code-workspace');
 
     try {
