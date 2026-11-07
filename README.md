@@ -51,8 +51,7 @@ that workflow succeeds, `Publish VSIX` downloads the same package and publishes
 it to the VS Code Marketplace using GitHub Actions OIDC Trusted Publishing.
 
 ### Marketplace Trusted Publishing
-
-Before the first release, open [Marketplace publisher management](https://marketplace.visualstudio.com/manage/publishers/), select the `joffroy` publisher, open **Trusted Publishing**, and create a policy with:
+Configure Trusted Publishing under the `joffroy` publisher with:
 
 - **Policy name:** `Release Workflow` (or another recognizable name)
 - **Provider:** `GitHub Actions`
@@ -61,20 +60,19 @@ Before the first release, open [Marketplace publisher management](https://market
 - **Workflow:** `publish.yml` (the file under `.github/workflows`)
 - **Environment:** leave blank unless the workflow uses a GitHub environment
 
+The new Marketplace extension ID is `joffroy.vscode-extension-autoopen-existing-workspace`.
 If the policy shows an activation deadline, run the workflow before it expires.
-For the current `"version": "1.0.6"` in `package.json`, run:
+For version `1.1.2`, run:
 
 ```powershell
-git tag v1.0.6
-git push origin v1.0.6
+git tag v1.1.2
+git push origin v1.1.2
 ```
 
-Use a new tag matching the updated package version for each release.
-If the Marketplace publish job fails after the GitHub Release succeeds, rerun
-`Publish VSIX` from GitHub Actions and enter the successful `Release VSIX` run ID
-to reuse its uploaded VSIX artifact without creating another release.
-See the [VS Code Marketplace release skill](.github/skills/vscode-marketplace-release/SKILL.md)
-for the workflow creation and recovery procedure.
+Use a new tag matching the package version for each release. If Marketplace
+publishing fails after the GitHub Release succeeds, rerun **Publish VSIX** from
+GitHub Actions and enter the successful **Release VSIX** run ID to reuse its
+uploaded VSIX artifact without creating another release.
 
 To create a local installable package without making a release:
 
@@ -83,8 +81,8 @@ npm run package:vsix
 ```
 
 The command compiles the extension and creates
-`vscode-extension-auto-open-existing-workspace-1.0.6.vsix`. Development sources, tests, and
-dependencies are excluded from the package.
+`vscode-extension-autoopen-existing-workspace-1.1.2.vsix`. Development sources,
+tests, and dependencies are excluded from the package.
 
 In VS Code, open **Extensions** (`Ctrl+Shift+X`), click **...**, choose
 **Install from VSIX...**, and select the generated file. Reload VS Code if prompted.

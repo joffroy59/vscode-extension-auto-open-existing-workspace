@@ -506,3 +506,68 @@ bump version to v1.1.1
 Bumped the extension package version and lockfile metadata to 1.1.1.
 
 ---
+
+## 2026-11-07T06:51:32Z
+
+### Environment
+- IDE: VS Code
+- Assistant: GitHub Copilot
+- Model: unknown
+
+### User Prompt
+fic
+
+### Files Modified
+- .github/workflows/release.yml
+- .github/workflows/publish.yml
+- .copilot-history/prompt-history.md
+
+### Summary
+Updated GitHub Actions to Node 24-compatible releases and raised the release build's installed Node version to 22.
+
+---
+
+## 2026-11-07T06:55:33Z
+
+### Environment
+- IDE: VS Code
+- Assistant: GitHub Copilot
+- Model: unknown
+
+### User Prompt
+fix pûblish
+
+### Files Modified
+- package.json
+- package-lock.json
+- .github/workflows/release.yml
+- README.md
+- .copilot-history/prompt-history.md
+
+### Summary
+Prepared the extension under a fresh Marketplace identity and version 1.1.2 because the previous extension name is unavailable and tag v1.1.1 already exists.
+
+---
+
+## 2026-11-07T06:58:08Z
+
+### Environment
+- IDE: VS Code
+- Assistant: GitHub Copilot
+- Model: unknown
+
+### User Prompt
+replace vscode-extension-auto-open-existing-workspace with vscode-extension-autoopen-existing-workspace
+
+### Files Modified
+- package.json
+- package-lock.json
+- .github/workflows/release.yml
+- README.md
+- src/extension.ts
+- .copilot-history/prompt-history.md
+
+### Summary
+Changed the extension identity and release artifacts to the user-selected Marketplace name while preserving the repository URL and version 1.1.2.
+
+---
