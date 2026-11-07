@@ -548,3 +548,26 @@ fix pûblish
 Prepared the extension under a fresh Marketplace identity and version 1.1.2 because the previous extension name is unavailable and tag v1.1.1 already exists.
 
 ---
+
+## 2026-11-07T06:58:08Z
+
+### Environment
+- IDE: VS Code
+- Assistant: GitHub Copilot
+- Model: unknown
+
+### User Prompt
+replace vscode-extension-auto-open-existing-workspace with vscode-extension-autoopen-existing-workspace
+
+### Files Modified
+- package.json
+- package-lock.json
+- .github/workflows/release.yml
+- README.md
+- src/extension.ts
+- .copilot-history/prompt-history.md
+
+### Summary
+Changed the extension identity and release artifacts to the user-selected Marketplace name while preserving the repository URL and version 1.1.2.
+
+---

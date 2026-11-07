@@ -1,14 +1,14 @@
 {
-  "name": "vscode-extension-auto-open-existing-workspace",
+  "name": "vscode-extension-autoopen-existing-workspace",
   "publisher": "joffroy",
   "repository": {
     "type": "git",
     "url": "https://github.com/joffroy59/vscode-extension-auto-open-existing-workspace.git"
   },
   "license": "Apache-2.0",
-  "displayName": "Open Existing Workspace",
+  "displayName": "Auto Open Workspace by Joffroy",
   "description": "Automatically opens a workspace file (.code-workspace) if it exists in the current directory or workspace root upon opening VS Code.",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "icon": "images/open-workspace.png",
   "engines": {
     "vscode": "^1.80.0"
@@ -23,7 +23,7 @@
   "contributes": {
     "commands": [
       {
-        "command": "vscode-extension-auto-open-existing-workspace.openExistingWorkspace",
+        "command": "vscode-extension-autoopen-existing-workspace.openExistingWorkspace",
         "title": "Open Existing Workspace"
       }
     ],
